@@ -12,3 +12,16 @@ levels <- c("level1", "level2", "level3", "level4")
 students$Income.cat <- cut(students$Income, breaks = bp, labels= names)
 students$Income.cat2 <- cut(students$Income, breaks = bp)
 students$Income.cat3 <- cut(students$Income, breaks = 3, labels = names)
+
+#Variables ficticias
+students <- read.csv('Recursos/r-course-master/data/tema1/data-conversion.csv')
+
+install.packages('dummies')
+library(dummies)
+
+students_dummy <- dummy.data.frame(students, sep = ".")
+names(students_dummy)
+
+dummy(students$State, sep =".")
+
+dummy.data.frame(students, names = c("Gender"), sep = ".")
