@@ -18,4 +18,5 @@ housing.data.2<- housing.data.1[complete.cases(housing.data[!(names(housing.data
 housing.data$rad <- NULL
 
 #Eliminar varias columnas
-drop <- c("rad","ptratio")
+drops <- c("rad","ptratio")
+housing.data.3 <- housing.data[!(names(housing.data) %in% drops)]
