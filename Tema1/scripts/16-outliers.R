@@ -14,3 +14,49 @@ boxplot(pressure_height ~ Month, ozone_data, main = "Pressure Height Per Month")
 
 #Con el $out, accedemos directamente a los outliers
 boxplot(ozone_reading ~ Month, ozone_data, main = "Ozone per Month")$out
+
+
+#Reemplazar outliers
+impute_outliers <- function(x, removeNA = TRUE){
+  #Obtener 2 cuartiles(por debajo del 5% y por encima del 95%)
+  quantiles <- quantile(x, c(0.05, 0.95), na.rm = removeNA) 
+  
+  #Reemplazar los que esten por debajo del 5% por la media
+  x[x<quantiles[1]] <- mean(x, na.rm = removeNA)
+  
+  #Reemplazar los que esten por encima del 95% por la mediana
+  x[x>quantiles[2]] <- median(x, na.rm = removeNA)
+  
+  x
+}
+
+
+imputed_data <- impute_outliers(ozone_data$pressure_height)
+
+#par = ordena o estructura graficos arriba o al lado del otroS
+par(mfrow = c(1,2))
+boxplot(ozone_data$pressure_height, main = "Presión con outliers")
+boxplot(imputed_data, main = "Presión sin outliers")
+
+
+#Remplazar outliers
+replace_outliers <- function(x, removeNA = TRUE){
+  qrts <- quantile(x, probs = c(0.25, 0.75), na.rm = removeNA)
+  caps <- quantile(x, probs = c(0.05, 0.95), na.rm = removeNA)
+  
+  #Rango intercuartilico
+  iqr <- qrts[2] - qrts[1]
+  
+  #1.5 veces el rango intercuartilico
+  H <- 1.5 * iqr
+  
+  x[x<qrts[1] - H] <- caps[1]
+  x[x>qrts[2] + H] <- caps[2]
+  x
+}
+
+par(mfrow = c(1,2))
+boxplot(ozone_data$pressure_height, main = "Presión con outliers")
+
+capped_pressure_height <- replace_outliers(ozone_data$pressure_height)
+boxplot(capped_pressure_height, main = "Presión sin outliers")
