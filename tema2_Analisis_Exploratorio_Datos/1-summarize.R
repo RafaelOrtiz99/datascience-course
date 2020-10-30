@@ -16,3 +16,39 @@ summary(data$cylinders)
 summary(data$mpg)
 
 str(data$cylinders)
+
+
+install.packages(c('modeest', 'raster', 'moments'))
+
+library(modeest) #Moda
+library(raster) #quantiles, cv(coeficiente de variación)
+library(moments) #asimetria, curtosis
+
+
+X = data$mpg
+###Medidas de centralización 
+##Como de reunidos o centrados estan los datos
+
+#Media aritmetica
+mean(X)
+sum(X)/length(X)
+
+#Mediana
+median(X)
+
+#Moda
+mfv(X)
+
+#Percentil o cuantil
+quantile(X)
+
+###Medidas de dispersión
+
+#Varianza
+var(X)
+
+#Desviación tipica o estandar
+sd(X)
+
+#Coeficiente de variación
+cv(X)
